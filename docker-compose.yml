@@ -1,0 +1,43 @@
+# Two ways to run:
+#
+#   Default (SQLite, single container):
+#       docker compose up --build
+#
+#   With PostgreSQL (production-like):
+#       docker compose --profile postgres up --build
+#   ...and set DATABASE_URL in .env to:
+#       postgresql+psycopg://qr:qr@db:5432/qrdb
+#
+# The app reads configuration from the .env file (see .env.example).
+
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    # For the SQLite default, persist the database file on a named volume so it
+    # survives container restarts.
+    volumes:
+      - qr_data:/app/data
+    environment:
+      # Override so the SQLite file lands on the mounted volume by default.
+      - DATABASE_URL=${DATABASE_URL:-sqlite:////app/data/qr_app.db}
+
+  # Optional PostgreSQL, only started with:  --profile postgres
+  db:
+    image: postgres:16
+    profiles: ["postgres"]
+    environment:
+      POSTGRES_USER: qr
+      POSTGRES_PASSWORD: qr
+      POSTGRES_DB: qrdb
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  qr_data:
+  pg_data:
