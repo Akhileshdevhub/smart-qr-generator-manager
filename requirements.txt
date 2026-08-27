@@ -1,0 +1,32 @@
+# Web framework + server
+fastapi==0.141.1
+uvicorn[standard]==0.46.0
+python-multipart==0.0.26      # multipart form parsing for logo uploads
+
+# Database (SQLAlchemy ORM; SQLite in dev, PostgreSQL in prod)
+SQLAlchemy==2.0.52
+psycopg[binary]==3.2.3         # PostgreSQL driver (only needed for the Postgres/prod path)
+
+# Validation / settings
+pydantic==2.13.3
+pydantic-settings==2.14.0
+email-validator==2.3.0
+
+# Auth: password hashing + JWT
+passlib==1.7.4
+bcrypt==4.0.1
+PyJWT==2.12.1
+
+# QR generation, image processing, exports, decode-verification
+segno==1.6.6                  # QR generation (true vector SVG + PDF matrix source)
+Pillow==12.2.0                # logo compositing / raster output
+reportlab==4.4.10             # printable vector PDF
+opencv-python-headless==4.13.0.92  # decode QR back for verification (no system deps)
+user-agents==2.2.0            # coarse device/browser/OS classification
+
+# Rate limiting
+slowapi==0.1.10
+
+# Tests
+pytest==9.1.1
+httpx==0.28.1                 # used by fastapi.testclient

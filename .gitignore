@@ -1,0 +1,23 @@
+# Secrets / environment
+.env
+
+# Local database files
+*.db
+*.sqlite3
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+
+# Node (only used to vendor Chart.js / Swagger UI; the vendored files ARE committed)
+node_modules/
