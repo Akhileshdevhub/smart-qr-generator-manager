@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Privacy notice — Smart QR Manager</title>
+  <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a href="/" class="brand"><span class="dot"></span> Smart QR Manager</a>
+    <nav class="nav-links"><a class="btn secondary small" href="/app">Open app</a></nav>
+  </header>
+  <div class="content" style="max-width:760px; margin:0 auto;">
+    <h1>Privacy notice</h1>
+    <p class="muted">How scan analytics work, in plain terms.</p>
+
+    <div class="card" style="margin-bottom:18px;">
+      <h3>What we collect when a dynamic QR is scanned</h3>
+      <p>When someone scans a <strong>dynamic</strong> QR code, the server records one
+      scan event containing:</p>
+      <ul>
+        <li>A timestamp.</li>
+        <li>A <strong>device category</strong> (mobile, tablet, desktop, or bot).</li>
+        <li>The <strong>browser family</strong> and <strong>operating system family</strong> (e.g. "Chrome", "iOS").</li>
+        <li>An optional coarse <strong>country/region</strong>, when available.</li>
+        <li>A one-way <strong>hashed identifier</strong> derived from the IP address.</li>
+      </ul>
+    </div>
+
+    <div class="card" style="margin-bottom:18px;">
+      <h3>What we do <em>not</em> store</h3>
+      <ul>
+        <li>We do <strong>not</strong> store the raw IP address. We store only a salted
+        SHA-256 hash truncated to 16 characters, which cannot be reversed back to an address.</li>
+        <li>We do not store precise location, names, or any personal profile.</li>
+        <li>Static QR codes are never tracked at all — they don't touch our server when scanned.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>Why and how long</h3>
+      <p>The purpose is to give a QR's owner a useful, aggregate picture of how their
+      code is being used (how many scans, on what kind of device) without profiling
+      individual people. Events are kept for the life of the QR project and are deleted
+      when the project is deleted.</p>
+      <p class="muted">This is a student portfolio project; the analytics are intentionally
+      minimal. Limitations (bot noise, approximate device detection) are documented in the
+      project's <code>docs/limitations.md</code>.</p>
+    </div>
+  </div>
+</body>
+</html>

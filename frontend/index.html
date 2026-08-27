@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Smart QR Generator &amp; Manager</title>
+  <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="dot"></span> Smart QR Manager</div>
+    <nav class="nav-links">
+      <a class="btn secondary small" href="/login">Log in</a>
+      <a class="btn small" href="/register">Create account</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h1>Create, manage, and track QR codes</h1>
+    <p class="lead">
+      Generate static and dynamic QR codes for links, Wi-Fi, contacts and more.
+      Customise them, export as PNG, SVG or PDF, and see privacy-conscious scan
+      analytics for the dynamic ones.
+    </p>
+    <div class="cta">
+      <a class="btn" href="/register">Get started</a>
+      <a class="btn secondary" href="/login">Log in</a>
+    </div>
+  </section>
+
+  <!-- Live demo powered by the public /api/qr/preview endpoint -->
+  <div class="demo-strip">
+    <div class="card">
+      <h3>Try it — no account needed</h3>
+      <p class="muted">Type a link and see a real, scannable QR rendered by the API.</p>
+      <div class="row" style="align-items:flex-end;">
+        <div class="field" style="margin-bottom:0;">
+          <label for="demoUrl">URL</label>
+          <input type="text" id="demoUrl" value="https://example.com">
+        </div>
+        <button class="btn" id="demoBtn" style="flex:0 0 auto;">Generate</button>
+      </div>
+      <div style="text-align:center; margin-top:18px;">
+        <img id="demoImg" alt="QR preview" width="180" height="180"
+             style="border:1px solid var(--border); border-radius:8px; padding:6px; background:#fff;">
+      </div>
+    </div>
+  </div>
+
+  <h2 class="section-title">Static vs dynamic QR codes</h2>
+  <p class="section-sub">The core idea behind this project.</p>
+  <div class="compare">
+    <div class="card">
+      <span class="badge static">Static</span>
+      <h3 style="margin-top:10px;">Content baked into the image</h3>
+      <p class="muted">
+        The QR encodes the actual content directly — a URL, Wi-Fi credentials, a
+        contact card. It works forever without a server, but changing the
+        destination means printing a new code.
+      </p>
+    </div>
+    <div class="card">
+      <span class="badge dynamic">Dynamic</span>
+      <h3 style="margin-top:10px;">A short link you control</h3>
+      <p class="muted">
+        The QR encodes a redirect URL like <code>/r/aB3xK9p</code>. The server
+        looks up the current destination, records the scan, and forwards the
+        visitor. You can change where it points <em>without reprinting</em> the code.
+      </p>
+    </div>
+  </div>
+
+  <h2 class="section-title">What's inside</h2>
+  <div class="feature-grid">
+    <div class="card"><h3>6 content types</h3><p class="muted">URL, text, Wi-Fi, vCard contact, email, and phone — each built with the correct standard format.</p></div>
+    <div class="card"><h3>Customisation</h3><p class="muted">Colours, size, quiet zone, error correction and a centre logo — with warnings when a choice may hurt scanning.</p></div>
+    <div class="card"><h3>Verified scannable</h3><p class="muted">Generated codes are decoded back and checked against the expected payload, so "it scans" isn't just a claim.</p></div>
+    <div class="card"><h3>PNG / SVG / PDF</h3><p class="muted">Raster PNG, true-vector SVG, and a printable vector PDF sheet with a title and label.</p></div>
+    <div class="card"><h3>Scan analytics</h3><p class="muted">For dynamic codes: totals, trend over time, device and browser breakdowns — without storing raw IP addresses.</p></div>
+    <div class="card"><h3>REST API</h3><p class="muted">A documented FastAPI backend with JWT auth and interactive docs at <a href="/docs">/docs</a>.</p></div>
+  </div>
+
+  <footer class="topbar" style="justify-content:center; gap:18px;">
+    <span class="muted" style="color:var(--muted);">Smart QR Generator &amp; Manager</span>
+    <a href="/privacy">Privacy</a>
+    <a href="/docs">API docs</a>
+  </footer>
+
+  <script src="/static/js/api.js"></script>
+  <script>
+    const img = document.getElementById("demoImg");
+    async function renderDemo() {
+      try {
+        const url = document.getElementById("demoUrl").value.trim() || "https://example.com";
+        const res = await fetch("/api/qr/preview", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ qr_type: "url", mode: "static", content: { url } })
+        });
+        if (!res.ok) { toast("Enter a valid http(s) URL"); return; }
+        img.src = URL.createObjectURL(await res.blob());
+      } catch (e) { toast("Could not render preview"); }
+    }
+    document.getElementById("demoBtn").addEventListener("click", renderDemo);
+    renderDemo();
+  </script>
+</body>
+</html>

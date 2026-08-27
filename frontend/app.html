@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Smart QR Manager</title>
+  <link rel="stylesheet" href="/static/css/styles.css">
+  <!-- Chart.js is vendored locally (frontend/js/vendor) so the app works fully
+       offline with no external dependency or CDN. -->
+  <script src="/static/js/vendor/chart.umd.min.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand"><span class="dot"></span> Smart QR</div>
+      <nav class="side-nav" id="sideNav">
+        <a href="#dashboard" data-view="dashboard">Dashboard</a>
+        <a href="#generate" data-view="generate">Generate QR</a>
+        <a href="#codes" data-view="codes">My QR Codes</a>
+        <a href="#analytics" data-view="analytics">Analytics</a>
+        <a href="#settings" data-view="settings">Settings</a>
+      </nav>
+      <div class="side-foot">
+        <div id="whoami">—</div>
+        <a href="/docs" target="_blank">API docs</a> · <a href="/privacy">Privacy</a>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="main-head">
+        <button class="btn secondary small menu-btn" id="menuBtn">☰</button>
+        <h2 id="viewTitle">Dashboard</h2>
+        <a class="btn small" href="#generate">+ New QR</a>
+      </div>
+      <div class="content" id="view"></div>
+    </main>
+  </div>
+
+  <div id="modalRoot"></div>
+
+  <script src="/static/js/api.js"></script>
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

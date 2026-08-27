@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Log in — Smart QR Manager</title>
+  <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+  <div class="auth-wrap">
+    <div class="card auth-card">
+      <a href="/" class="brand"><span class="dot"></span> Smart QR Manager</a>
+      <h2 style="text-align:center; font-size:20px;">Log in</h2>
+      <div id="err"></div>
+      <form id="loginForm">
+        <div class="field">
+          <label for="email">Email</label>
+          <input type="email" id="email" required autocomplete="email">
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input type="password" id="password" required autocomplete="current-password">
+        </div>
+        <button class="btn" type="submit" style="width:100%;">Log in</button>
+      </form>
+      <p class="muted" style="text-align:center; margin-top:16px;">
+        No account? <a href="/register">Create one</a>
+      </p>
+    </div>
+  </div>
+  <script src="/static/js/api.js"></script>
+  <script>
+    if (Auth.isLoggedIn()) location.href = "/app";
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const err = document.getElementById("err"); err.innerHTML = "";
+      try {
+        const data = await api("/api/auth/login", { auth: false, method: "POST", body: {
+          email: document.getElementById("email").value,
+          password: document.getElementById("password").value,
+        }});
+        Auth.set(data.access_token);
+        location.href = "/app";
+      } catch (ex) {
+        err.innerHTML = `<div class="alert err">${escapeHtml(ex.message)}</div>`;
+      }
+    });
+  </script>
+</body>
+</html>
